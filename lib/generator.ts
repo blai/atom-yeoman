@@ -16,13 +16,10 @@ var Environment = (function() {
         paths.pop();
 
         _.each(getAllConsumingPackages(), x => paths.push(x));
+
         // add the default path for the user.
-        if (process.platform === 'win32') {
-            paths.push(path.join(process.env.APPDATA, 'npm/node_modules'));
-        } else {
-            paths.push('/usr/lib/node_modules');
-            paths.push('/usr/local/lib/node_modules/');
-        }
+        var globalPaths = require('module').globalPaths;
+        paths = paths.concat(globalPaths);
 
         return paths;
     };
